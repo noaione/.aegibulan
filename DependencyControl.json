@@ -57,6 +57,45 @@
                 ],
                 "0.1.0": ["First release"]
             }
+        },
+        "nao.AutoRealign": {
+            "url": "@{baseUrl}#@{namespace}",
+            "author": "noaione",
+            "name": "Auto Realign",
+            "description": "Automatically realign to a new alignment without making too much changes on position",
+            "channels": {
+                "master": {
+                    "version": "0.1.0",
+                    "released": "2021-05-10",
+                    "default": true,
+                    "files": [
+                        {
+                            "name": ".moon",
+                            "url": "@{fileBaseUrl}@{fileName}",
+                            "sha1": "83086621C815C47DF33DACD0640CAD61D3B5071E"
+                        }
+                    ],
+                    "requiredModules": [
+                        {
+                            "moduleName": "a-mo.LineCollection",
+                            "name": "Aegisub-Motion (LineCollection)",
+                            "url": "https://github.com/TypesettingTools/Aegisub-Motion",
+                            "version": "1.3.0",
+                            "feed": "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"
+                        },
+                        {
+                          "moduleName": "l0.ASSFoundation",
+                          "name": "ASSFoundation",
+                          "url": "https://github.com/TypesettingTools/ASSFoundation",
+                          "version": "0.5.0",
+                          "feed": "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"
+                        }
+                    ]
+                }
+            },
+            "changelog": {
+                "0.1.0": ["Rewritten version of nao.AlignShit", "Still not working as intended, but it's pretty close"]
+            }
         }
     }
 }

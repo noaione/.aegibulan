@@ -31,9 +31,16 @@ It's basically running a series of ffmpeg command extract frame, crop, and stack
 **Sample**
 ![Sample](https://raw.githubusercontent.com/noaione/.aegibulan/master/assets/centipede9frame_testsub.ass.png)
 
-## [`nao.AutoRealign`](#)
-**Status:** `Broken`
-
+## [`nao.AutoRealign`]((https://github.com/noaione/.aegibulan/blob/master/nao.AutoRealign.moon)
 Automatically realign to another alignment without losing the original position.
 
-Will be recomitted whenever I got time to fix it.
+**Requirements**:
+- [l0.ASSFoundation](https://github.com/TypesettingTools/ASSFoundation)
+- [a-mo.LineCollection](https://github.com/TypesettingTools/Aegisub-Motion)
+- [SubInspector](https://github.com/TypesettingTools/SubInspector)
+
+To use, just install everything, then select the line you want to realign, open `Auto Realign` then pick whatever new alignment you want
+
+**Caveats**:
+- Shifting is not perfect yet, I'll cross out this caveats when I found a perfect solution to readjust some small number
+
