@@ -12,6 +12,7 @@ export script_namespace   = "nao.AutoRealign"
 
 DependencyControl = require "l0.DependencyControl"
 rec = DependencyControl{
+    feed: "https://raw.githubusercontent.com/noaione/.aegibulan/master/DependencyControl.json",
     {
         {"a-mo.LineCollection", version: "1.3.0", url: "https://github.com/TypesettingTools/Aegisub-Motion",
         feed: "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"},
