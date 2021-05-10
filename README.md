@@ -4,7 +4,7 @@ A collection of my script that I use sometimes.
 
 All of my scripts need DependencyControl to work.
 
-## Centipede
+## [`nao.Centipede`](https://github.com/noaione/.aegibulan/blob/master/nao.Centipede.moon)
 Create a stacked subtitle screenshot with the main sub (or the first one) being the full uncropped images, while the other are cropped into the specific sub boundary with some padding.
 
 Totally not inspired by people posting a screenshot of subtitle to r/Hololive
@@ -13,8 +13,9 @@ Totally not inspired by people posting a screenshot of subtitle to r/Hololive
 - `ffmpeg.exe`
     - Put this into your `automation\autoload\bin` folder
     - Or put it into PATH
-- l0.ASSFoundation
-- a-mo.LineCollection
+- [l0.ASSFoundation](https://github.com/TypesettingTools/ASSFoundation)
+- [a-mo.LineCollection](https://github.com/TypesettingTools/Aegisub-Motion)
+- [SubInspector](https://github.com/TypesettingTools/SubInspector)
 
 To use, just install everything, then select the sub you want to stack together, open `Automation` then `Centipede`.
 
@@ -22,7 +23,13 @@ This will generate a file beside your `.ass` file with the filename format: `cen
 
 It's basically running a series of ffmpeg command extract frame, crop, and stack together the frame.
 
-## AutoRealign
+**Caveats**:
+- The speed of the script can be really slow if the video gets longer and longer
+
+**Sample**
+![Sample](https://raw.githubusercontent.com/noaione/.aegibulan/master/assets/centipede9frame_testsub.ass.png)
+
+## [`nao.AutoRealign`](#)
 **Status:** `Broken`
 
 Automatically realign to another alignment without losing the original position.
