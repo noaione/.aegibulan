@@ -13,13 +13,13 @@
 
 export script_name        = "Centipede"
 export script_description = "Create a vertical stacked image of your subtitles"
-export script_version     = "0.2.0"
+export script_version     = "0.2.1"
 export script_author      = "noaione"
 export script_namespace   = "nao.Centipede"
 
 DependencyControl = require "l0.DependencyControl"
 depCtrl = DependencyControl{
-    feed: "https://raw.githubusercontent.com/noaione/.aegibulan/master/DependencyControl.json"
+    feed: "https://raw.githubusercontent.com/noaione/.aegibulan/master/DependencyControl.json",
     {
         {"a-mo.LineCollection", version: "1.3.0", url: "https://github.com/TypesettingTools/Aegisub-Motion",
         feed: "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"},
