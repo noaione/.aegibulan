@@ -14,14 +14,14 @@
             "description": "Create a vertical stacked image of your subtitles",
             "channels": {
                 "master": {
-                    "version": "0.2.0",
+                    "version": "0.2.1",
                     "released": "2021-05-10",
                     "default": true,
                     "files": [
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "67383564E65FC3DD3D63DEC4EA4BFD1F0382D03C"
+                            "sha1": "E5F088A24ED6DD7FE27BC51A820335ECC499A999"
                         }
                     ],
                     "requiredModules": [
@@ -50,6 +50,9 @@
                 }
             },
             "changelog": {
+                "0.2.1": [
+                    "Fix DepCtrl problem"
+                ],
                 "0.2.0": [
                     "Make it much faster/efficient",
                     "Line sometimes goes beyond one line, I forgot about that and should be fixed now",
@@ -72,7 +75,7 @@
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "83086621C815C47DF33DACD0640CAD61D3B5071E"
+                            "sha1": "FDB7A0235136473363A1F4EAB39E88C9084F395D"
                         }
                     ],
                     "requiredModules": [
