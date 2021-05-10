@@ -31,7 +31,7 @@ It's basically running a series of ffmpeg command extract frame, crop, and stack
 **Sample**
 ![Sample](https://raw.githubusercontent.com/noaione/.aegibulan/master/assets/centipede9frame_testsub.ass.png)
 
-## [`nao.AutoRealign`]((https://github.com/noaione/.aegibulan/blob/master/nao.AutoRealign.moon)
+## [`nao.AutoRealign`](https://github.com/noaione/.aegibulan/blob/master/nao.AutoRealign.moon)
 Automatically realign to another alignment without losing the original position.
 
 **Requirements**:
