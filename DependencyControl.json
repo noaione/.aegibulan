@@ -14,14 +14,14 @@
             "description": "Create a vertical stacked image of your subtitles",
             "channels": {
                 "master": {
-                    "version": "0.1.0",
+                    "version": "0.2.0",
                     "released": "2021-05-10",
                     "default": true,
                     "files": [
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "31E25311D3C1777A84A3614FE03CFF38AF0E09D6"
+                            "sha1": "67383564E65FC3DD3D63DEC4EA4BFD1F0382D03C"
                         }
                     ],
                     "requiredModules": [
@@ -50,6 +50,11 @@
                 }
             },
             "changelog": {
+                "0.2.0": [
+                    "Make it much faster/efficient",
+                    "Line sometimes goes beyond one line, I forgot about that and should be fixed now",
+                    "Add dry run options to check what command will be generated, and some debugging stuff"
+                ],
                 "0.1.0": ["First release"]
             }
         }

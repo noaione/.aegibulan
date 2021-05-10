@@ -13,7 +13,7 @@
 
 export script_name        = "Centipede"
 export script_description = "Create a vertical stacked image of your subtitles"
-export script_version     = "0.1.0"
+export script_version     = "0.2.0"
 export script_author      = "noaione"
 export script_namespace   = "nao.Centipede"
 
@@ -27,10 +27,11 @@ depCtrl = DependencyControl{
         feed: "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"}
         {"l0.ASSFoundation", version: "0.5.0", url: "https://github.com/TypesettingTools/ASSFoundation",
         feed: "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"},
+        "json"
     }
 }
 
-LCollect, ConfigHandler, ASSF = depCtrl\requireModules!
+LCollect, ConfigHandler, ASSF, json = depCtrl\requireModules!
 
 -- Some stuff that I'll probably forgot
 BASE_STRING = "@echo off\necho Starting Centipede version %s...\n"
@@ -113,24 +114,58 @@ CalculateHeight = (yPos, lineHeight, alignment) ->
         aegisub.log "Unknown alignment"
         aegisub\cancel!
 
-GenerateName = (frameName) ->
-    return aegisub.decode_path("?temp") .. "\\" .. "centipede_" .. frameName\gsub ":", "_"
-
-GenerateImageCommand = (tableData, assFile, videoFile, shouldCrop) ->
-    BASE = "echo Cutting down time %s\n"\format tableData.frame
+GenerateUncroppedImage = (centipedeBonanza, assFile, videoFile) ->
+    BASE = "echo Generating image snapshot...\n"
     assFile = assFile\gsub "\\", "\\\\"
     assFile = assFile\gsub ":", "\\:"
-    input_file = INPUT_FMT\format videoFile
-    fname = GenerateName(tableData.frame) .. "_frameTemp.png"
-    tspart = FRAME_SELECT\format tableData.frame
     assFuck = ASS_FMT\format assFile
-    output_file = OUTPUT_FMT\format fname
-    cropping = CROP_FMT\format tableData.width, tableData.height, tableData.x, tableData.y
-    ffmpeg_cmd = "%s %s %s -vf \"%s"\format FFMPEG, input_file, tspart, assFuck
-    if shouldCrop
-        ffmpeg_cmd = ffmpeg_cmd .. ",%s"\format cropping
-    ffmpeg_cmd = ffmpeg_cmd .. "\" %s"\format output_file
-    return BASE .. ffmpeg_cmd .. "\n\n", fname
+    input_file = INPUT_FMT\format videoFile
+    ccImage = 0
+    ffmpeg_cmd = "\"%s\" %s -vf \"%s,select='"\format FFMPEG, input_file, assFuck
+    centipede_select = {}
+    for i, centi in ipairs centipedeBonanza
+        table.insert(centipede_select, "eq(n\\,%d)"\format centi.frame)
+        ccImage = ccImage + 1
+    final_cmd = "\'\" -vsync 0 -vframes %d "\format ccImage
+    -- Use double %, to escape the character properly
+    final_cmd = final_cmd .. "\"" .. aegisub.decode_path("?temp") .. "\\centipede_frame%%03d.png\""
+    ffmpeg_cmd = ffmpeg_cmd .. table.concat(centipede_select, "+") .. final_cmd
+    return BASE .. ffmpeg_cmd
+
+GenerateFinalCentipede = (centipedeBonanza, outputFileName) ->
+    BASE = "echo Generating final centipede image...\n"
+    counter = 1
+    tempFolder = aegisub.decode_path("?temp") .. "\\"
+    ffmpeg_cmd = "\"%s\""\format FFMPEG
+    centipede_select = {}
+    for i, centi in ipairs centipedeBonanza
+        fname = tempFolder .. "centipede_frame%03d.png"\format counter
+        input_file = INPUT_FMT\format fname
+        ffmpeg_cmd = ffmpeg_cmd .. " %s"\format input_file
+        counter = counter + 1
+    ffmpeg_cmd = ffmpeg_cmd .. " -filter_complex \""
+    counter = 1
+    fcomplex = {}
+    firstOne = true
+    for i, centi in ipairs centipedeBonanza
+        if firstOne
+            firstOne = false
+            continue
+        cropping = CROP_FMT\format centi.width, centi.height, centi.x, centi.y
+        complexStuff = "[%d:v]%s[frame%d]"\format counter, cropping, counter
+        counter = counter + 1
+        table.insert(fcomplex, complexStuff)
+    ffmpeg_cmd = ffmpeg_cmd .. table.concat(fcomplex, ";") .. ";"
+    counter = 0
+    for i, centi in ipairs centipedeBonanza
+        if counter == 0
+            ffmpeg_cmd = ffmpeg_cmd .. "[0]"
+        else
+            ffmpeg_cmd = ffmpeg_cmd .. "[frame%d]"\format counter
+        counter = counter + 1
+    ffmpeg_cmd = ffmpeg_cmd .. "vstack=inputs=%d"\format counter
+    ffmpeg_cmd = ffmpeg_cmd .. "[out]\" -map \"[out]\" -c png \"" .. outputFileName .. "\""
+    return BASE .. ffmpeg_cmd
 
 MakeCentipede = (subs, sel, res) ->
     xres, yres, ar, artype = aegisub\video_size!
@@ -148,6 +183,7 @@ MakeCentipede = (subs, sel, res) ->
     centipedeBonanza = {}
 
     aegisub.log "Collecting lines...\n"
+    ccLine = 0
     lines = LCollect subs, sel, () -> true
     lines\runCallback (lines, line) ->
         lineData = ASSF\parse line
@@ -157,9 +193,6 @@ MakeCentipede = (subs, sel, res) ->
             -- Empty line, throw it away
             return
 
-        st = tonumber(line.start_time)
-        timecode = ToTimecode st
-
         haveDrawings, haveRotation, w, h = false, false
         lineData\callback (section,sections,i) -> haveDrawings = true,
             ASSF.Section.Drawing
@@ -168,10 +201,14 @@ MakeCentipede = (subs, sel, res) ->
             aegisub.log "Sorry, this script does not support drawing yet"
             aegisub\cancel!
 
-        metrics, tagList, shape = lineData\getTextMetrics true
-        w, h = metrics.width, metrics.height
+        lineBounds = lineData\getLineBounds true
 
-        realHeight = CalculateHeight pos.y, h, align.value
+        w, h = lineBounds.w, lineBounds.h
+
+        realHeight = {
+            top: lineBounds[1].y,
+            bottom: lineBounds[2].y,
+        }
         realWidth = {
             left: 0,
             right: xres,
@@ -191,14 +228,19 @@ MakeCentipede = (subs, sel, res) ->
         elseif finalY < 0
             finalY = 0
 
+        realFrame = aegisub.frame_from_ms(line.start_time)
+
         finalized = {
-            sortFrame: st,
-            frame: timecode,
+            sortFrame: line.start_time,
+            frame: realFrame,
             width: xres,
             height: finalH,
             x: 0,
             y: finalY,
         }
+        if res.dryRun
+            aegisub.log ">> Raw data for line %d: %s\n"\format ccLine, json.encode(finalized)
+        ccLine = ccLine + 1
 
         table.insert(centipedeBonanza, finalized)
 
@@ -212,45 +254,49 @@ MakeCentipede = (subs, sel, res) ->
 
     fname = aegisub\file_name!
     scriptPath = aegisub.decode_path("?script") .. "\\"
+    tempFolder = aegisub.decode_path("?temp") .. "\\"
     ass_file = scriptPath .. fname
-    finalized_centipede = scriptPath .. "centipede_%s.png"\format fname
+    finalized_centipede = scriptPath .. "centipede%dframe_%s.png"\format ccLine, fname
     aegisub.log "Generating output to %s\n"\format finalized_centipede
+
+    table.sort centipedeBonanza, (a, b) -> a.sortFrame < b.sortFrame
+    if res.dryRun
+        aegisub.log "Dry running, this script will be run:\n\n---\n"
+        fftext = BASE_STRING\format script_version
+        fftext = fftext .. "setlocal\n"
+        uncroppedCmd = GenerateUncroppedImage centipedeBonanza, ass_file, video_path
+        fftext = fftext .. uncroppedCmd .. "\n\n"
+        centipedImage = GenerateFinalCentipede centipedeBonanza, finalized_centipede
+        fftext = fftext .. centipedImage .. "\n\n"
+        fftext = fftext .. "endlocal\n"
+        aegisub.log fftext
+        aegisub.log "---\n" 
+        return lines\getSelection!
 
     temp_file = aegisub.decode_path("?temp/centipede.bat")
 
     fh = io.open(temp_file, "w")
     fh\write BASE_STRING\format script_version
     fh\write "setlocal\r\n"
-    table.sort centipedeBonanza, (a, b) -> a.sortFrame < b.sortFrame
-    finalizedFileName = {}
-    shouldCrop = false
-    for i, centi in ipairs centipedeBonanza
-        cmd_add, filename = GenerateImageCommand centi, ass_file, video_path, shouldCrop
-        fh\write cmd_add
-        table.insert(finalizedFileName, filename)
-        if not shouldCrop
-            shouldCrop = true
-    FINAL_COMMAND = FFMPEG
-    totalPairs = 0
-    for i, fnameFinal in ipairs finalizedFileName
-        inputF = INPUT_FMT\format fnameFinal
-        FINAL_COMMAND = FINAL_COMMAND .. " %s"\format inputF
-        totalPairs = totalPairs + 1
-    final_cmd_extension = " -filter_complex \"vstack=inputs=%d\" -c png \"%s\""\format totalPairs, finalized_centipede
-    FINAL_COMMAND = FINAL_COMMAND .. final_cmd_extension
-    fh\write "echo Generating final centipede images...\n" .. FINAL_COMMAND .. "\n\n"
+    uncroppedCmd = GenerateUncroppedImage centipedeBonanza, ass_file, video_path
+    fh\write uncroppedCmd .. "\n\n"
+    centipedImage = GenerateFinalCentipede centipedeBonanza, finalized_centipede
+    fh\write centipedImage .. "\n\n"
     fh\write "endlocal\r\n"
     fh\close!
+
     aegisub.log "Executing script...\n"
     os.execute '"' .. temp_file .. '"'
     aegisub.log "Cleaning up file...\n"
     os.remove temp_file
-    for i, fnameFinal in ipairs finalizedFileName
-        os.remove fnameFinal
+    counter = 0
+    for i, centi in ipairs centipedeBonanza
+        fname = tempFolder .. "centipede_frame%03d.png"\format counter
+        counter = counter + 1
+        os.remove fname
 
     aegisub.log "Centipede generated!"
 
-    -- someone please revive the Aegisub website so I can see the correct API to be used
     return lines\getSelection!
 
 
@@ -275,6 +321,17 @@ CentipedeDialog = (subs, sel, res) ->
                 value: 30,
                 config: true,
                 hint: "Overall height padding (in pixel). For examples 30 is the value, this will set the top and bottom padding as 15px"
+            },
+            dryRun: {
+                class: "checkbox",
+                x: 0,
+                y: 1,
+                width: 2,
+                height: 1,
+                value: false,
+                config: false,
+                label: "Dry run",
+                hint: "This will not run the script, but instead will output out the script that will be run if you use it."
             }
         }
     }
