@@ -25,7 +25,7 @@ It's basically running a series of ffmpeg command extract frame, crop, and stack
 
 **Caveats**:
 - The speed of the script can be really slow if the video gets longer and longer
-- If there's a line with same start time, it will be duplicated
+- ~~If there's a line with same start time, it will be duplicated~~ Added in **Version 0.3.0**
 - Since it takes the first frame of the sub, sadly you can use \fade effect or it'll be broken.
 
 **Sample**

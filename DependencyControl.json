@@ -21,7 +21,7 @@
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "E5F088A24ED6DD7FE27BC51A820335ECC499A999"
+                            "sha1": "84E7C288B21DDA8DCC63DF4D9F9500FD4E56C5E6"
                         }
                     ],
                     "requiredModules": [
@@ -50,6 +50,11 @@
                 }
             },
             "changelog": {
+                "0.3.0": [
+                    "Allow to merge same line together, example usage is different layer of border for same frame.",
+                    "Previously that will create separate frame, but now it will only create one.",
+                    "Dont include commented line while collecting all the lines."
+                ],
                 "0.2.1": [
                     "Fix DepCtrl problem"
                 ],

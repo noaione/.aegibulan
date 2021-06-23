@@ -13,7 +13,7 @@
 
 export script_name        = "Centipede"
 export script_description = "Create a vertical stacked image of your subtitles"
-export script_version     = "0.2.1"
+export script_version     = "0.3.0"
 export script_author      = "noaione"
 export script_namespace   = "nao.Centipede"
 
@@ -167,6 +167,13 @@ GenerateFinalCentipede = (centipedeBonanza, outputFileName) ->
     ffmpeg_cmd = ffmpeg_cmd .. "[out]\" -map \"[out]\" -c png \"" .. outputFileName .. "\""
     return BASE .. ffmpeg_cmd
 
+FindExistingFrame = (centipedes, frame) ->
+    pos = 0
+    for i, centi in ipairs centipedes
+        if centi.frame == frame
+            pos = i
+    return pos
+
 MakeCentipede = (subs, sel, res) ->
     xres, yres, ar, artype = aegisub\video_size!
     if yres == nil
@@ -184,7 +191,12 @@ MakeCentipede = (subs, sel, res) ->
 
     aegisub.log "Collecting lines...\n"
     ccLine = 0
-    lines = LCollect subs, sel, () -> true
+    lines = LCollect subs, sel, (line) ->
+        -- Dont include commented line
+        if line.comment
+            return false
+        return true
+
     lines\runCallback (lines, line) ->
         lineData = ASSF\parse line
         pos, align, org = lineData\getPosition!
@@ -238,11 +250,26 @@ MakeCentipede = (subs, sel, res) ->
             x: 0,
             y: finalY,
         }
-        if res.dryRun
-            aegisub.log ">> Raw data for line %d: %s\n"\format ccLine, json.encode(finalized)
-        ccLine = ccLine + 1
 
-        table.insert(centipedeBonanza, finalized)
+        replacedPos = FindExistingFrame centipedeBonanza, realFrame
+        if replacedPos > 0
+            currentLine = centipedeBonanza[replacedPos]
+            if res.dryRun
+                aegisub.log ">> Merging line %d with existing position %d: %s\n"\format ccLine, replacedPos, json.encode(currentLine)
+            if finalized.width > currentLine.width
+                currentLine.width = finalized.width
+            if finalized.height > currentLine.height
+                currentLine.height = finalized.height
+            if finalized.y < currentLine.y
+                currentLine.y = finalized.y 
+            if res.dryRun
+                aegisub.log ">> Replacing position %d with this data: %s\n"\format replacedPos, json.encode(currentLine)
+            centipedeBonanza[replacedPos] = currentLine
+        else
+            if res.dryRun
+                aegisub.log ">> Adding data for line %d: %s\n"\format ccLine, json.encode(finalized)
+            table.insert(centipedeBonanza, finalized)
+        ccLine += 1
 
     actualFiltered = 0
     if CountTable(centipedeBonanza) < 1
