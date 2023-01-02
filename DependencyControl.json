@@ -33,18 +33,18 @@
                             "feed": "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"
                         },
                         {
-                          "moduleName": "a-mo.ConfigHandler",
-                          "name": "Aegisub-Motion (ConfigHandler)",
-                          "url": "https://github.com/TypesettingTools/Aegisub-Motion",
-                          "version": "1.1.4",
-                          "feed": "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"
+                            "moduleName": "a-mo.ConfigHandler",
+                            "name": "Aegisub-Motion (ConfigHandler)",
+                            "url": "https://github.com/TypesettingTools/Aegisub-Motion",
+                            "version": "1.1.4",
+                            "feed": "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"
                         },
                         {
-                          "moduleName": "l0.ASSFoundation",
-                          "name": "ASSFoundation",
-                          "url": "https://github.com/TypesettingTools/ASSFoundation",
-                          "version": "0.5.0",
-                          "feed": "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"
+                            "moduleName": "l0.ASSFoundation",
+                            "name": "ASSFoundation",
+                            "url": "https://github.com/TypesettingTools/ASSFoundation",
+                            "version": "0.5.0",
+                            "feed": "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"
                         }
                     ]
                 }
@@ -92,11 +92,11 @@
                             "feed": "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"
                         },
                         {
-                          "moduleName": "l0.ASSFoundation",
-                          "name": "ASSFoundation",
-                          "url": "https://github.com/TypesettingTools/ASSFoundation",
-                          "version": "0.5.0",
-                          "feed": "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"
+                            "moduleName": "l0.ASSFoundation",
+                            "name": "ASSFoundation",
+                            "url": "https://github.com/TypesettingTools/ASSFoundation",
+                            "version": "0.5.0",
+                            "feed": "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"
                         }
                     ]
                 }
