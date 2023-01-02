@@ -72,4 +72,6 @@ or you can made it manually depending on what you wanna do.
 
 **Demo**
 
-![Demo](https://media.githubusercontent.com/media/noaione/.aegibulan/master/assets/jittery_demo.mp4)
+https://user-images.githubusercontent.com/34302902/210222116-f033fa22-3bf0-490d-8b71-9f50672a8570.mp4
+
+
