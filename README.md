@@ -4,6 +4,10 @@ A collection of my script that I use sometimes.
 
 All of my scripts need DependencyControl to work.
 
+**Scripts**
+- [`nao.AutoRealign`](#naoautorealign)
+- [`nao.Centipede`](#naocentipede)
+
 ## [`nao.AutoRealign`](https://github.com/noaione/.aegibulan/blob/master/nao.AutoRealign.moon)
 Automatically realign to another alignment without losing the original position.
 
@@ -16,6 +20,8 @@ To use, just install everything, then select the line you want to realign, open 
 
 **Caveats**:
 - Shifting is not perfect yet, I'll cross out this caveats when I found a perfect solution to readjust some small number
+- Doesn't work nicely with `\fsp`
+- Doesn't work with drawing
 
 ## [`nao.Centipede`](https://github.com/noaione/.aegibulan/blob/master/nao.Centipede.moon)
 Create a stacked subtitle screenshot with the main sub (or the first one) being the full uncropped images, while the other are cropped into the specific sub boundary with some padding.
