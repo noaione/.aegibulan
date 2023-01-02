@@ -7,6 +7,7 @@ All of my scripts need DependencyControl to work.
 **Scripts**
 - [`nao.AutoRealign`](#naoautorealign)
 - [`nao.Centipede`](#naocentipede)
+- [`nao.Jittery`](#naojittery)
 
 ## [`nao.AutoRealign`](https://github.com/noaione/.aegibulan/blob/master/nao.AutoRealign.moon)
 Automatically realign to another alignment without losing the original position.
@@ -48,4 +49,27 @@ It's basically running a series of ffmpeg command extract frame, crop, and stack
 - Since it takes the first frame of the sub, sadly you can use \fade effect or it'll be broken.
 
 **Sample**
+
 ![Sample](https://raw.githubusercontent.com/noaione/.aegibulan/master/assets/centipede9frame_testsub.ass.png)
+
+## [`nao.Jittery`](https://github.com/noaione/.aegibulan/blob/master/nao.Jittery.moon)
+Jitter or Shake a multiple selected line tags with a random amount.
+
+It's based on unanimated's Hyperdimensional Relocator shake function but with more ASS tags support.
+
+**Requirements**:
+- [l0.ASSFoundation](https://github.com/TypesettingTools/ASSFoundation)
+- [a-mo.LineCollection](https://github.com/TypesettingTools/Aegisub-Motion)
+
+To use, select the line you want to jitter, then select the `Jittery` from your automation list.<br/>
+After that enter the amount of jitter diff and enable smoothing if you want.<br />
+Don't forget to select the tags that you want to affect with the jitter.
+
+After that, just click the `Jitter` button.
+
+To make the multiple line, you can use Hyperdimensional Relocator -> line2fbf to split the line every frame
+or you can made it manually depending on what you wanna do.
+
+**Demo**
+
+![Demo](https://media.githubusercontent.com/media/noaione/.aegibulan/master/assets/jittery_demo.mp4)
