@@ -104,6 +104,45 @@
             "changelog": {
                 "0.1.0": ["Rewritten version of nao.AlignShit", "Still not working as intended, but it's pretty close"]
             }
+        },
+        "nao.Jittery": {
+            "url": "@{baseUrl}#@{namespace}",
+            "author": "noaione",
+            "name": "Jittery",
+            "description": "Jitter/shake many type of ASS tags with a random amount",
+            "channels": {
+                "master": {
+                    "version": "0.1.0",
+                    "released": "2023-01-02",
+                    "default": true,
+                    "files": [
+                        {
+                            "name": ".moon",
+                            "url": "@{fileBaseUrl}@{fileName}",
+                            "sha1": "FDB7A0235136473363A1F4EAB39E88C9084F395D"
+                        }
+                    ],
+                    "requiredModules": [
+                        {
+                            "moduleName": "a-mo.LineCollection",
+                            "name": "Aegisub-Motion (LineCollection)",
+                            "url": "https://github.com/TypesettingTools/Aegisub-Motion",
+                            "version": "1.3.0",
+                            "feed": "https://raw.githubusercontent.com/TypesettingTools/Aegisub-Motion/DepCtrl/DependencyControl.json"
+                        },
+                        {
+                            "moduleName": "l0.ASSFoundation",
+                            "name": "ASSFoundation",
+                            "url": "https://github.com/TypesettingTools/ASSFoundation",
+                            "version": "0.5.0",
+                            "feed": "https://raw.githubusercontent.com/TypesettingTools/ASSFoundation/master/DependencyControl.json"
+                        }
+                    ]
+                }
+            },
+            "changelog": {
+                "0.1.0": ["Initial version"]
+            }
         }
     }
 }
