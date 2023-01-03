@@ -141,6 +141,7 @@
                 }
             },
             "changelog": {
+                "0.1.1": ["Separate jitter amount for x/y position"],
                 "0.1.0": ["Initial version"]
             }
         }

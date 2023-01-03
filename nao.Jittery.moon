@@ -11,7 +11,7 @@
 
 export script_name = "Jittery"
 export script_description = "Jitter/shake many type of ASS tags with a random amount"
-export script_version = "0.1.0"
+export script_version = "0.1.1"
 export script_author = "noaione"
 export script_namespace = "nao.Jittery"
 
@@ -172,18 +172,23 @@ run_jitter = (subs, sel, res) ->
 
         for tagname in *enabled_tags
             if tagname == "position" or tagname == "move" then
-                jit = math.random(-100, 100) / 100 * res.jitter_amount
-                if smooth and ljit != nil then
-                    jit = (jit + 3 * ljit) / 4
-                ljit = jit
+                jitx = math.random(-100, 100) / 100 * res.jitter_amount
+                jity = math.random(-100, 100) / 100 * res.jitter_amount
+                if smooth and ljitx != nil then
+                    if ljitx != nil then
+                        jitx = (jitx + 3 * ljitx) / 4
+                    if ljity != nil then
+                        jity = (jity + 3 * ljity) / 4
+                ljitx = jitx
+                ljity = jity
                 if pos.class == ASSF.Tag.Move
-                    pos.startPos.x = pos.startPos.x + jit
-                    pos.startPos.y = pos.startPos.y + jit
-                    pos.endPos.x = pos.endPos.x + jit
-                    pos.endPos.y = pos.endPos.y + jit
+                    pos.startPos.x = pos.startPos.x + jitx
+                    pos.startPos.y = pos.startPos.y + jity
+                    pos.endPos.x = pos.endPos.x + jitx
+                    pos.endPos.y = pos.endPos.y + jity
                 else
-                    pos.x = pos.x + jit
-                    pos.y = pos.y + jit
+                    pos.x = pos.x + jitx
+                    pos.y = pos.y + jity
                 lineData\replaceTags {pos}
             else
                 lineData\modTags tagname, (tag) ->
