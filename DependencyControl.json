@@ -112,14 +112,14 @@
             "description": "Jitter/shake many type of ASS tags with a random amount",
             "channels": {
                 "master": {
-                    "version": "0.1.0",
+                    "version": "0.1.1",
                     "released": "2023-01-02",
                     "default": true,
                     "files": [
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "FDB7A0235136473363A1F4EAB39E88C9084F395D"
+                            "sha1": "E0D595E068ECBB30B229563FEF8AA4884B854A39"
                         }
                     ],
                     "requiredModules": [
