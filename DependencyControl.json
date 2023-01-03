@@ -3,11 +3,12 @@
     "name": "N4O's Aegisub Scripts",
     "description": "Main repository of all N4O Aegisub scripts/macros",
     "baseUrl": "https://github.com/noaione/.aegibulan",
-    "fileBaseUrl": "https://raw.githubusercontent.com/noaione/.aegibulan",
+    "fileBaseUrl": "https://raw.githubusercontent.com/noaione/.aegibulan/master",
     "url": "@{baseUrl}",
     "maintainer": "noaione",
     "macros": {
         "nao.Centipede": {
+            "fileBaseUrl": "@{fileBaseUrl}/@{namespace}",
             "url": "@{baseUrl}#@{namespace}",
             "author": "noaione",
             "name": "Centipede",
@@ -21,7 +22,7 @@
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "84E7C288B21DDA8DCC63DF4D9F9500FD4E56C5E6"
+                            "sha1": "84e7c288b21dda8dcc63df4d9f9500fd4e56c5e6"
                         }
                     ],
                     "requiredModules": [
@@ -67,6 +68,7 @@
             }
         },
         "nao.AutoRealign": {
+            "fileBaseUrl": "@{fileBaseUrl}/@{namespace}",
             "url": "@{baseUrl}#@{namespace}",
             "author": "noaione",
             "name": "Auto Realign",
@@ -80,7 +82,7 @@
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "FDB7A0235136473363A1F4EAB39E88C9084F395D"
+                            "sha1": "fdb7a0235136473363a1f4eab39e88c9084f395d"
                         }
                     ],
                     "requiredModules": [
@@ -106,7 +108,8 @@
             }
         },
         "nao.Jittery": {
-            "url": "@{baseUrl}#@{namespace}",
+            "fileBaseUrl": "@{fileBaseUrl}/@{namespace}",
+            "url": "@{baseUrl}/#@{namespace}",
             "author": "noaione",
             "name": "Jittery",
             "description": "Jitter/shake many type of ASS tags with a random amount",
@@ -119,7 +122,7 @@
                         {
                             "name": ".moon",
                             "url": "@{fileBaseUrl}@{fileName}",
-                            "sha1": "E0D595E068ECBB30B229563FEF8AA4884B854A39"
+                            "sha1": "e0d595e068ecbb30b229563fef8aa4884b854a39"
                         }
                     ],
                     "requiredModules": [
